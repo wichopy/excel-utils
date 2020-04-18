@@ -7,15 +7,15 @@
 Example running with no target directory, defaulting to the directory you are running the app, and including the top row:
 ```
 cd Downloads
-./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data" -ignoreTopRow=false
+./excel-merger.exe -targetSheet "Some-data" -ignoreTopRow=false
 ```
 
 Example output:
 
 ```
-Starting excel merger with flags: ignoreTopRow: false, targetSheet: Some-data, targetDirectory:C:\Users\William Chou\Downloads
+Starting excel merger with flags: ignoreTopRow: false, targetSheet: Some-data, targetDirectory:.
 
-Scanning files in target directory: 'C:\Users\William Chou\Downloads'
+Scanning files in target directory: '.'
 
 Opening Book1 (1).xlsx
 Copying data from sheet Some-data to output.
@@ -31,7 +31,7 @@ Saving to C:\Users\William Chou\Desktop/output.xlsx
 
 Example running with a target directory and sheet, top row is ignored by default
 ```
-./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetDirectory "C:\Users\William Chou\Documents\Worksheets"  -targetSheet "Some-data"
+./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data"
 ```
 
 Example output:
