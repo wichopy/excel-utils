@@ -1,59 +1,83 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 )
 
 func main() {
 	output := excelize.NewFile()
-	ignoreTopRow := true
-	targetSheet := "Some-data"
-	outputRow := 0
-	// Open all files in a directory
-	// X Grab alldata from a sheet.
-	// X Combine sheet to make a single dataset
+	var ignoreTopRow = flag.Bool("ignoreTopRow", true, "Ignore top row in all sheets")
+	var targetSheet = flag.String("targetSheet", "Sheet1", "Sheet to target in each workbook")
+	var targetDir = flag.String("targetDirectory", ".", "Path to directory for scanning.")
 
-	fmt.Println("Opening fileBook1.xlsx")
-	f, err := excelize.OpenFile("Book1.xlsx")
+	flag.Parse()
+	outputRow := 0
+	fileExtFilter := "xlsx"
+
+	fmt.Printf("Starting excel merger with flags: %v: %v, %v: %v, %v:%v \n", "ignoreTopRow", *ignoreTopRow, "targetSheet", *targetSheet, "targetDirectory", *targetDir)
+	fmt.Println()
+	pwd, err := os.Getwd()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 
-	// Get all the rows in the Sheet1.
-	fmt.Println("Copying data from sheet" + targetSheet)
-	rows, err := f.GetRows(targetSheet)
-	for i, row := range rows {
-		if ignoreTopRow && i == 0 {
-			continue
-		}
-		for j, colCell := range row {
-			cellCoords, err := excelize.CoordinatesToCellName(j+1, outputRow+1)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			output.SetCellValue("Sheet1", cellCoords, colCell)
-			// fmt.Print(colCell, "\t")
-		}
-		// fmt.Println()
-		outputRow += 1
-		// if i > 20 {
-		// 	break
-		// }
-	}
-
-	fmt.Printf("%v%s\n", outputRow, "rows copied")
-
-	dir, err := os.Getwd()
+	fmt.Println("Scanning files in target directory: '" + *targetDir + "'")
+	fmt.Println()
+	files, err := ioutil.ReadDir(*targetDir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Saving to " + dir + "/output.xlsx")
-	output.SaveAs(dir + "/output.xlsx")
 
+	for _, file := range files {
+		if !strings.Contains(file.Name(), fileExtFilter) {
+			continue
+		}
+
+		fmt.Println("Opening " + file.Name())
+		f, err := excelize.OpenFile(file.Name())
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		// Get all the rows in targetSheet.
+		rows, err := f.GetRows(*targetSheet)
+		if err != nil {
+			fmt.Println("Cannot find target sheet '" + *targetSheet + "' in file '" + file.Name() + "'")
+			continue
+		}
+
+		fmt.Println("Copying data from sheet " + *targetSheet + " to output.")
+
+		for i, row := range rows {
+			if *ignoreTopRow && i == 0 {
+				continue
+			}
+
+			for j, colCell := range row {
+				cellCoords, err := excelize.CoordinatesToCellName(j+1, outputRow+1)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				output.SetCellValue("Sheet1", cellCoords, colCell)
+			}
+
+			outputRow += 1
+		}
+	}
+
+	fmt.Println()
+	fmt.Printf("%v%s\n", outputRow, " rows copied\n")
+
+	fmt.Println("Saving to " + pwd + "/output.xlsx")
+	output.SaveAs(pwd + "/output.xlsx")
 }
