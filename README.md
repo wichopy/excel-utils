@@ -5,12 +5,42 @@
 3. Go to where you downloaded the file in your command line and execute the binary:
 ```
 cd Downloads
-./excel-merger
+C:\Users\William Chou\Desktop>  ./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data" -ignoreTopRow=false
+```
 
-OR
+Starting excel merger with flags: ignoreTopRow: false, targetSheet: Some-data, targetDirectory:C:\Users\William Chou\Downloads
 
-./excel-merger.exe -targetSheet "Some Sheet Name"
+Scanning files in target directory: 'C:\Users\William Chou\Downloads'
 
+Opening Book1 (1).xlsx
+Copying data from sheet Some-data to output.
+Opening Book1.xlsx
+Copying data from sheet Some-data to output.
+Opening output.xlsx
+Cannot find target sheet 'Some-data' in file 'output.xlsx'
+
+1210 rows copied
+
+Saving to C:\Users\William Chou\Desktop/output.xlsx
+
+```
+PS C:\Users\William Chou\Desktop>  ./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data" -ignoreTopRow=true
+```
+
+Starting excel merger with flags: ignoreTopRow: true, targetSheet: Some-data, targetDirectory:C:\Users\William Chou\Downloads
+
+Scanning files in target directory: 'C:\Users\William Chou\Downloads'
+
+Opening Book1 (1).xlsx
+Copying data from sheet Some-data to output.
+Opening Book1.xlsx
+Copying data from sheet Some-data to output.
+Opening output.xlsx
+Cannot find target sheet 'Some-data' in file 'output.xlsx'
+
+1208 rows copied
+
+Saving to C:\Users\William Chou\Desktop/output.xlsx
 ```
 
 ## Dev
