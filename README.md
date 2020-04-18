@@ -3,11 +3,16 @@
 1. Download the release for your operating system
 2. Open your command line of choice (Terminal, iTerm, PowerShell, etc)
 3. Go to where you downloaded the file in your command line and execute the binary:
+
+Example running with no target directory, defaulting to the directory you are running the app, and including the top row:
 ```
 cd Downloads
-C:\Users\William Chou\Desktop>  ./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data" -ignoreTopRow=false
+./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data" -ignoreTopRow=false
 ```
 
+Example output:
+
+```
 Starting excel merger with flags: ignoreTopRow: false, targetSheet: Some-data, targetDirectory:C:\Users\William Chou\Downloads
 
 Scanning files in target directory: 'C:\Users\William Chou\Downloads'
@@ -22,11 +27,16 @@ Cannot find target sheet 'Some-data' in file 'output.xlsx'
 1210 rows copied
 
 Saving to C:\Users\William Chou\Desktop/output.xlsx
-
-```
-PS C:\Users\William Chou\Desktop>  ./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetSheet "Some-data" -ignoreTopRow=true
 ```
 
+Example running with a target directory and sheet, top row is ignored by default
+```
+./excel-merger.exe -targetDirectory "C:\Users\William Chou\Downloads" -targetDirectory "C:\Users\William Chou\Documents\Worksheets"  -targetSheet "Some-data"
+```
+
+Example output:
+
+```
 Starting excel merger with flags: ignoreTopRow: true, targetSheet: Some-data, targetDirectory:C:\Users\William Chou\Downloads
 
 Scanning files in target directory: 'C:\Users\William Chou\Downloads'
