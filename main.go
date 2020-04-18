@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"path"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 )
@@ -42,7 +43,7 @@ func main() {
 		}
 
 		fmt.Println("Opening " + file.Name())
-		f, err := excelize.OpenFile(file.Name())
+		f, err := excelize.OpenFile(path.Join(*targetDir, file.Name()))
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -78,6 +79,7 @@ func main() {
 	fmt.Println()
 	fmt.Printf("%v%s\n", outputRow, " rows copied\n")
 
-	fmt.Println("Saving to " + pwd + "/output.xlsx")
-	output.SaveAs(pwd + "/output.xlsx")
+	outputLocation := path.Join(pwd, "output.xlsx")
+	fmt.Println("Saving to " + outputLocation)
+	output.SaveAs(outputLocation)
 }
